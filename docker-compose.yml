@@ -1,0 +1,29 @@
+---
+version: '3.4'
+services:
+  php:
+    container_name: hockey-php
+    build:
+      network: host
+      context: ./php
+    volumes:
+      - ./rekreacni-hokej:/var/vhost/app
+    ports:
+      - "8080:8080"
+  apache:
+    container_name: hockey-apache
+    build:
+      context: ./apache
+      network: host
+    volumes:
+      - ./rekreacni-hokej:/var/vhost/app
+    ports:
+      - "80:80"
+  mysql:
+    container_name: hockey-mysql
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=10moioui
+      - MYSQL_DATABASE=hakka
+    ports:
+      - "3306:3306"

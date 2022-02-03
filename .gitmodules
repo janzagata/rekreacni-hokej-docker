@@ -1,0 +1,3 @@
+[submodule "rekreacni-hokej"]
+	path = rekreacni-hokej
+	url = git@github.com:janzagata/rekreacni-hokej.git
