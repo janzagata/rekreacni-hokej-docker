@@ -4,7 +4,6 @@ services:
   php:
     container_name: hockey-php
     build:
-      network: host
       context: ./php
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
