@@ -4,12 +4,11 @@ services:
   php:
     container_name: hockey-php
     build:
-      network: host
       context: ./php
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:9000"
   apache:
     container_name: hockey-apache
     build:
@@ -18,7 +17,7 @@ services:
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
     ports:
-      - "80:80"
+      - "8081:80"
   mysql:
     container_name: hockey-mysql
     image: mariadb
@@ -26,5 +25,3 @@ services:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
