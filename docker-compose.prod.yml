@@ -7,7 +7,8 @@ services:
       context: ./php
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
-    network_mode: host
+    ports:
+      - "127.0.0.1:8080:9000"
   mysql:
     container_name: hockey-mysql
     image: mariadb
