@@ -7,13 +7,10 @@ services:
       context: ./php
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
-    ports:
-      - "127.0.0.1:8080:9000"
   apache:
     container_name: hockey-apache
     build:
       context: ./apache
-      network: host
     volumes:
       - ./rekreacni-hokej:/var/vhost/app
     ports:
@@ -26,4 +23,4 @@ services:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     ports:
-      - "127.0.0.1:3307:3306"
+      - "3307:3306"
