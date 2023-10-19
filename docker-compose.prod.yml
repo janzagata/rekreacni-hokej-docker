@@ -9,12 +9,46 @@ services:
       - ./rekreacni-hokej:/var/vhost/app
     ports:
       - "127.0.0.1:8080:9000"
+    restart: unless-stopped
+    depends_on:
+      - mysql
   mysql:
     container_name: hockey-mysql
-    image: mariadb
+    image: mariadb:10.8
     environment:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     ports:
       - "127.0.0.1:3307:3306"
+    volumes:
+      - docker-hockey-database:/var/lib/mysql
+    restart: unless-stopped
+  mysql-exporter:
+    image: prom/mysql-exporter
+    entrypoint: /bin/mysqld_exporter --config.my-cnf=/home/.my.cnf
+    build:
+      context: .
+      dockerfile: ./mysql-exporter/Dockerfile
+    container_name: hockey-mysql-exporter
+    ports:
+      - "9105:9104"
+    volumes:
+      - ./mysql-exporter/.my.cnf:/home/.my.cnf
+    environment:
+      - collect.info_schema.tablestats=true
+      - collect.info_schema.userstats=true
+      - collect.info_schema.query_response_time=true
+      - collect.auto_increment.columns=true
+      - collect.binlog_size=true
+      - collect.perf_schema.eventsstatements=true
+      - collect.perf_schema.eventswaits=true
+      - collect.perf_schema.file_events=true
+      - collect.perf_schema.indexiowaits=true
+      - collect.perf_schema.tableiowaits=true
+      - collect.perf_schema.tablelocks=true
+    restart: unless-stopped
+    depends_on: 
+      - mysql
+volumes:
+  docker-hockey-database:
